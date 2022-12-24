@@ -4,15 +4,15 @@ import 'package:perpuskita_app/Pages/Home_page.dart';
 void main() {
   runApp(MaterialApp(
       title: 'PERPUS AJA',
-      home: Login(),
+      home: Boarding(),
       routes: <String, WidgetBuilder>{
-        '/Login': (BuildContext context) => Login(),
+        '/Boarding': (BuildContext context) => Boarding(),
         '/Home' : (BuildContext context) => const Home(),
       }));
 }
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Boarding extends StatelessWidget {
+  const Boarding({super.key});
 
   @override
   Widget build(BuildContext context) {
