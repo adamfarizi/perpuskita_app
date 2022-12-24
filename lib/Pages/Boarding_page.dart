@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:perpuskita_app/Pages/Login_page.dart';
 import 'package:perpuskita_app/Pages/Home_page.dart';
 
 void main() {
   runApp(MaterialApp(
-      title: 'PERPUS AJA',
+      title: 'PERPUS KITA',
       home: Boarding(),
       routes: <String, WidgetBuilder>{
         '/Boarding': (BuildContext context) => Boarding(),
+        '/Login' :(BuildContext context) => Login(),
         '/Home' : (BuildContext context) => const Home(),
       }));
 }
@@ -59,14 +61,14 @@ class Boarding extends StatelessWidget {
           const SizedBox(height: 35),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/Home');
+              Navigator.pushNamed(context, '/Login');
             },
             child:Container(
             height: 50,
             width: 320,
             padding: const EdgeInsets.all(15),
             decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
               color: Color(0xFF494CA2),
             ),
             child: const Center(
@@ -84,7 +86,7 @@ class Boarding extends StatelessWidget {
             width: 320,
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               color: Colors.white,
               border: Border.all(color: Color(0xFF494CA2), width: 1.5),
             ),
