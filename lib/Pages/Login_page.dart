@@ -86,7 +86,7 @@ class Login extends StatelessWidget {
                       ),),
                       const SizedBox(height: 20,),
                       Row(
-                        children: [
+                        children: const [
                           Text('Email *', textAlign: TextAlign.left,),
                           SizedBox(width: 235,)
                         ],
@@ -104,7 +104,7 @@ class Login extends StatelessWidget {
                         ),
                       ),
                       Row(
-                        children: [
+                        children: const [
                           Text('Password *', textAlign: TextAlign.left,),
                           SizedBox(width: 210,)
                         ],
@@ -142,15 +142,15 @@ class Login extends StatelessWidget {
                           )
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       Row(
                         children: [
-                          Text("Don't have any account ? "),
+                          const Text("Don't have any account ? "),
                           GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(context, '/Home');
                             },
-                            child:Text('Signin', style: TextStyle(
+                            child:const Text('Sign In', style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF494CA2),
                             ),),

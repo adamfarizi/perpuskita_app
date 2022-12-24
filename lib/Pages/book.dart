@@ -1,7 +1,6 @@
 import 'package:perpuskita_app/sql_perpus.dart';
 import 'package:flutter/material.dart';
 
-
 void main() {
   runApp(const Book());
 }
@@ -18,7 +17,9 @@ class Book extends StatelessWidget {
 }
 
 class MyWidget extends StatefulWidget {
-  const MyWidget({super.key,});
+  const MyWidget({
+    super.key,
+  });
 
   @override
   State<MyWidget> createState() => _MyWidgetPageState();
@@ -51,69 +52,80 @@ class _MyWidgetPageState extends State<MyWidget> {
     return MaterialApp(
       home: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(350),
+          preferredSize: const Size.fromHeight(100),
           child: AppBar(
-            title: const Text('All Books',
-                style: TextStyle(
-                  color: Color(0xFF494CA2),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                ),),
             backgroundColor: Colors.white,
             shadowColor: Colors.white,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25)
-              )
-            ),
             flexibleSpace: Container(
               child: Column(
-                children: <Widget> [
-                  const SizedBox(height: 50,),
-                  Image.asset('asset/img/book2.png',
-                  height: 250,),
-                  const SizedBox(height: 20,),
-                  SizedBox(
-                    width: 350,
+                children: <Widget>[
+                  const SizedBox(
                     height: 50,
-                    child: TextField(
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(10),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          icon: const Icon(Icons.search),
-                          hintText: 'Search Books'),
-                    ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      const Image(
+                        image: AssetImage('asset/img/P2.png'),
+                        width: 60,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      SizedBox(
+                        width: 300,
+                        height: 50,
+                        child: TextField(
+                          decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(10),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              hintText: 'Search Books'),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
-
-          ),),
-        body: ListView.builder(
+          ),
+        ),
+        body: GridView.builder(
+            gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             itemCount: perpus.length,
-            itemBuilder: (context, index) => Card(
-                  child: ListTile(
-                    leading: Image.asset('asset/img/book3.jpg', height: 80,),
-                    title: Text(perpus[index]['nama_buku']),
-                    subtitle: Text("Genre : " + perpus[index]['genre_buku']),
-                    isThreeLine: true,
-                    trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          children: [
-                            IconButton(
-                                onPressed: () => Form(perpus[index]['id']),
-                                icon: const Icon(Icons.edit)),
-                            IconButton(
-                                onPressed: () {
-                                  deleteData(perpus[index]['id']);
-                                },
-                                icon: const Icon(Icons.delete))
-                          ],
-                        )),
+            itemBuilder: (context, index) => GestureDetector(
+                  onTap: () => Form(perpus[index]['id']),
+                  onDoubleTap: () {
+                    deleteData(perpus[index]['id']);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Card(
+                      child: Column(
+                        children: [
+                          const Image(
+                            image: AssetImage('asset/img/book3.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              perpus[index]['nama_buku'] ?? "No Tittle",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 )),
         floatingActionButton: FloatingActionButton(
@@ -157,7 +169,7 @@ class _MyWidgetPageState extends State<MyWidget> {
       tahunController.text = dataPerpus['tahun_buku'];
       jumlahController.text = dataPerpus['jumlah_buku'];
     }
-    
+
     showModalBottomSheet(
         context: context,
         builder: ((context) => Container(
@@ -168,11 +180,11 @@ class _MyWidgetPageState extends State<MyWidget> {
                   child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  const Text('Input Buku Baru',style: TextStyle(
-                    color: Color(0xFF494CA2),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20)
-                  ),
+                  const Text('Input Buku Baru',
+                      style: TextStyle(
+                          color: Color(0xFF494CA2),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20)),
                   const SizedBox(height: 10),
                   TextField(
                     controller: namaController,
@@ -210,24 +222,24 @@ class _MyWidgetPageState extends State<MyWidget> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF494CA2)),
-                    onPressed: () async {
-                      if (id == null) {
-                        await createData();
-                        print("Tambah");
-                      } else {
-                        await changeData(id);
-                        print("Updated");
-                      }
-                      namaController.text = '';
-                      genreController.text = '';
-                      penulisController.text = '';
-                      tahunController.text = '';
-                      jumlahController.text = '';
-                      Navigator.pop(context);
-                    },
-                    child: Text(id == null ? 'Tambah' : 'ubah')
-                  )
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF494CA2)),
+                      onPressed: () async {
+                        if (id == null) {
+                          await createData();
+                          print("Tambah");
+                        } else {
+                          await changeData(id);
+                          print("Updated");
+                        }
+                        namaController.text = '';
+                        genreController.text = '';
+                        penulisController.text = '';
+                        tahunController.text = '';
+                        jumlahController.text = '';
+                        Navigator.pop(context);
+                      },
+                      child: Text(id == null ? 'Tambah' : 'ubah'))
                 ],
               )),
             )));
