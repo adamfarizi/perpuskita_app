@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:perpuskita_app/sql_perpus.dart';
-import 'package:perpuskita_app/Pages/book.dart';
+import 'package:perpuskita_app/Pages/page1.dart';
 
 void main(List<String> args) {
   runApp(page2());

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:perpuskita_app/Pages/book.dart';
+import 'package:perpuskita_app/Pages/page1.dart';
 import 'package:perpuskita_app/Pages/page2.dart';
 import 'package:perpuskita_app/Pages/page3.dart';
 import 'package:perpuskita_app/Pages/page4.dart';
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return const MaterialApp(
         home: DefaultTabController(
-          length: 5,
+          length: 4,
           child: Scaffold(
             body: TabBarView(
               children: <Widget> [

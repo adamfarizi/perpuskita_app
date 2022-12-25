@@ -41,14 +41,13 @@ class _MyWidgetPageState extends State<MyWidget> {
   }
 
   @override
-  void iniState() {
+  void initState() {
     refreshData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(perpus);
     return MaterialApp(
       home: Scaffold(
         appBar: PreferredSize(
@@ -97,13 +96,54 @@ class _MyWidgetPageState extends State<MyWidget> {
           ),
         ),
         body: GridView.builder(
-            gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, mainAxisExtent: 235),
             itemCount: perpus.length,
             itemBuilder: (context, index) => GestureDetector(
-                  onTap: () => Form(perpus[index]['id']),
-                  onDoubleTap: () {
-                    deleteData(perpus[index]['id']);
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: Center(child: Text(perpus[index]['nama_buku'] ?? "No Tittle", textAlign: TextAlign.center,),),
+                        content: Container(
+                          height: 150,
+                          width: 100,
+                          child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Penulis : " + perpus[index]['penulis_buku']),
+                            const SizedBox(height: 5),
+                            Text("Tahun : " + perpus[index]['tahun_buku']),
+                            const SizedBox(height: 10),
+                            const Text("Sinopsis", style: TextStyle(fontWeight: FontWeight.bold),),
+                            Text("Si Fulan lagi bosan di kantor. Dia sedang memfotokopi sebuah lembar kerja. Tetapi mesin fotokopi ngadat sehingga dia kesal lalu menendang mesin itu. Mesin bekerja lagi tapi yang keluar bukannya hasil fotokopi lembar kerja, tapi sebuah titik hitam besar hampir memenuhi seluruh lembar kertas.",
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,)
+                          ],
+                        ),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Form(perpus[index]['id']);
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('EDIT'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pop(deleteData(perpus[index]['id']));
+                            },
+                            child: const Text('HAPUS'),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -113,15 +153,26 @@ class _MyWidgetPageState extends State<MyWidget> {
                           const Image(
                             image: AssetImage('asset/img/book3.jpg'),
                             fit: BoxFit.cover,
+                            height: 150,
                           ),
                           Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              perpus[index]['nama_buku'] ?? "No Tittle",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 15),
-                            ),
+                            child: Container(
+                              width: 150,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    perpus[index]['nama_buku'] ?? "No Tittle",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF494CA2)),
+                                  ),
+                                  const SizedBox(height: 5,),
+                                  Text(perpus[index]['tahun_buku'], style: TextStyle(fontSize: 10),)
+                                ],
+                              ),
+                            )
                           ),
                         ],
                       ),
@@ -154,8 +205,6 @@ class _MyWidgetPageState extends State<MyWidget> {
 
   Future deleteData(int id) async {
     await SQLPerpus.deleteData(id);
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text("Berhasil dihapus")));
     return refreshData();
   }
 
@@ -180,7 +229,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                   child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  const Text('Input Buku Baru',
+                  const Text('Data Buku Baru',
                       style: TextStyle(
                           color: Color(0xFF494CA2),
                           fontWeight: FontWeight.bold,
