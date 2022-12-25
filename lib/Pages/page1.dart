@@ -109,18 +109,18 @@ class _MyWidgetPageState extends State<MyWidget> {
                           height: 150,
                           width: 100,
                           child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Penulis : " + perpus[index]['penulis_buku']),
-                            const SizedBox(height: 5),
-                            Text("Tahun : " + perpus[index]['tahun_buku']),
-                            const SizedBox(height: 10),
-                            const Text("Sinopsis", style: TextStyle(fontWeight: FontWeight.bold),),
-                            Text("Si Fulan lagi bosan di kantor. Dia sedang memfotokopi sebuah lembar kerja. Tetapi mesin fotokopi ngadat sehingga dia kesal lalu menendang mesin itu. Mesin bekerja lagi tapi yang keluar bukannya hasil fotokopi lembar kerja, tapi sebuah titik hitam besar hampir memenuhi seluruh lembar kertas.",
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,)
-                          ],
-                        ),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Penulis : " + perpus[index]['penulis_buku']),
+                              const SizedBox(height: 5),
+                              Text("Tahun : " + perpus[index]['tahun_buku']),
+                              const SizedBox(height: 10),
+                              const Text("Sinopsis", style: TextStyle(fontWeight: FontWeight.bold),),
+                              Text("Si Fulan lagi bosan di kantor. Dia sedang memfotokopi sebuah lembar kerja. Tetapi mesin fotokopi ngadat sehingga dia kesal lalu menendang mesin itu. Mesin bekerja lagi tapi yang keluar bukannya hasil fotokopi lembar kerja, tapi sebuah titik hitam besar hampir memenuhi seluruh lembar kertas.",
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         actions: <Widget>[
                           TextButton(
@@ -146,7 +146,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                     );
                   },
                   child: Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Card(
                       child: Column(
                         children: [
@@ -156,7 +156,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                             height: 150,
                           ),
                           Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Container(
                               width: 150,
                               child: Column(
@@ -166,7 +166,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                                     perpus[index]['nama_buku'] ?? "No Tittle",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF494CA2)),
+                                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF494CA2)),
                                   ),
                                   const SizedBox(height: 5,),
                                   Text(perpus[index]['tahun_buku'], style: TextStyle(fontSize: 10),)
@@ -229,8 +229,8 @@ class _MyWidgetPageState extends State<MyWidget> {
                   child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  const Text('Data Buku Baru',
-                      style: TextStyle(
+                   Text(id == null ? 'Input Data Buku' : 'Update Data Buku',
+                      style: const TextStyle(
                           color: Color(0xFF494CA2),
                           fontWeight: FontWeight.bold,
                           fontSize: 20)),
@@ -288,7 +288,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                         jumlahController.text = '';
                         Navigator.pop(context);
                       },
-                      child: Text(id == null ? 'Tambah' : 'ubah'))
+                      child: Text(id == null ? 'Tambah' : 'Update'))
                 ],
               )),
             )));

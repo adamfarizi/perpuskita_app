@@ -9,11 +9,29 @@ class page3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Text("INI ADALAH FITUR PAGE 3"),
+      body: Container(
+        width: 500,
+        child: Column(
+          children: [
+            const SizedBox(height: 230,),
+            Image.asset('asset/img/alert.png', width: 200,),
+            const SizedBox(height: 20,),
+            Container(
+              width: 300,
+              child: const Text("Maaf, halaman ini belum tersedia :(", 
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Color(0xFF494CA2),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
-    );
+      );
   }
 }
