@@ -1,6 +1,5 @@
 import 'package:perpuskita_app/sql_perpus.dart';
 import 'package:flutter/material.dart';
-
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
@@ -118,7 +117,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              hintText: 'Search Books'),
+                              hintText: 'Search Buku'),
                         ),
                       ),
                     ],

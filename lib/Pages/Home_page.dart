@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perpuskita_app/Pages/model/majalah.dart';
 import 'package:perpuskita_app/Pages/page1.dart';
 import 'package:perpuskita_app/Pages/page2.dart';
 import 'package:perpuskita_app/Pages/page3.dart';
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
             body: TabBarView(
               children: <Widget> [
                 Book(),
-                page2(),
+                Magazine(),
                 page3(),
                 page4()
                 
