@@ -1,6 +1,12 @@
 import 'package:perpuskita_app/sql_perpus.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
+import 'package:file_picker/file_picker.dart';
+import 'model/buku.dart';
+
 void main() {
   runApp(const Book());
 }
@@ -27,10 +33,9 @@ class MyWidget extends StatefulWidget {
 
 class _MyWidgetPageState extends State<MyWidget> {
   TextEditingController namaController = TextEditingController();
-  TextEditingController genreController = TextEditingController();
   TextEditingController penulisController = TextEditingController();
   TextEditingController tahunController = TextEditingController();
-  TextEditingController jumlahController = TextEditingController();
+  TextEditingController sipnosisController = TextEditingController();
 
   List<Map<String, dynamic>> perpus = [];
   void refreshData() async {
@@ -44,6 +49,34 @@ class _MyWidgetPageState extends State<MyWidget> {
   void initState() {
     refreshData();
     super.initState();
+  }
+
+  String? photoprofile;
+  Future<String> getFilePicker() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'jpg',
+        'png',
+        'webm',
+      ],
+    );
+
+    if (result != null) {
+      PlatformFile sourceFile = result.files.first;
+      final destination = await getExternalStorageDirectory();
+      File? destinationFile =
+          File('${destination!.path}/${sourceFile.name.hashCode}');
+      final newFile =
+          File(sourceFile.path!).copy(destinationFile.path.toString());
+      setState(() {
+        photoprofile = destinationFile.path;
+      });
+      File(sourceFile.path!.toString()).delete();
+      return destinationFile.path;
+    } else {
+      return "Dokumen belum diupload";
+    }
   }
 
   @override
@@ -104,21 +137,32 @@ class _MyWidgetPageState extends State<MyWidget> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
-                        title: Center(child: Text(perpus[index]['nama_buku'] ?? "No Tittle", textAlign: TextAlign.center,),),
+                        title: Center(
+                          child: Text(
+                            perpus[index]['nama_buku'] ?? "No Tittle",
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                         content: Container(
                           height: 150,
                           width: 100,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Penulis : " + perpus[index]['penulis_buku']),
+                              Text(
+                                  "Penulis : " + perpus[index]['penulis_buku']),
                               const SizedBox(height: 5),
                               Text("Tahun : " + perpus[index]['tahun_buku']),
                               const SizedBox(height: 10),
-                              const Text("Sinopsis", style: TextStyle(fontWeight: FontWeight.bold),),
-                              Text("Si Fulan lagi bosan di kantor. Dia sedang memfotokopi sebuah lembar kerja. Tetapi mesin fotokopi ngadat sehingga dia kesal lalu menendang mesin itu. Mesin bekerja lagi tapi yang keluar bukannya hasil fotokopi lembar kerja, tapi sebuah titik hitam besar hampir memenuhi seluruh lembar kertas.",
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,)
+                              const Text(
+                                "Sinopsis",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                perpus[index]['sipnosis_buku'],
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ],
                           ),
                         ),
@@ -146,34 +190,46 @@ class _MyWidgetPageState extends State<MyWidget> {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
                     child: Card(
                       child: Column(
                         children: [
-                          const Image(
-                            image: AssetImage('asset/img/book3.jpg'),
-                            fit: BoxFit.cover,
+                          Container(
                             height: 150,
+                            width: 200,
+                            child: perpus[index]['foto_buku'] != ''
+                                ? Image.file(
+                                    File(perpus[index]['foto_buku']),
+                                    fit: BoxFit.cover,
+                                  )
+                                : FlutterLogo(),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              width: 150,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    perpus[index]['nama_buku'] ?? "No Tittle",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF494CA2)),
-                                  ),
-                                  const SizedBox(height: 5,),
-                                  Text(perpus[index]['tahun_buku'], style: TextStyle(fontSize: 10),)
-                                ],
-                              ),
-                            )
-                          ),
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 150,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      perpus[index]['nama_buku'] ?? "No Tittle",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF494CA2)),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      perpus[index]['tahun_buku'],
+                                      style: TextStyle(fontSize: 10),
+                                    )
+                                  ],
+                                ),
+                              )),
                         ],
                       ),
                     ),
@@ -191,15 +247,13 @@ class _MyWidgetPageState extends State<MyWidget> {
     );
   }
 
-  Future<void> createData() async {
-    await SQLPerpus.createData(namaController.text, genreController.text,
-        penulisController.text, tahunController.text, jumlahController.text);
+  Future<void> createData(Buku buku) async {
+    await SQLPerpus.createData(buku);
     refreshData();
   }
 
-  Future<void> changeData(int id) async {
-    await SQLPerpus.changeData(id, namaController.text, genreController.text,
-        penulisController.text, tahunController.text, jumlahController.text);
+  Future<void> changeData(Buku buku) async {
+    await SQLPerpus.changeData(buku);
     refreshData();
   }
 
@@ -210,13 +264,11 @@ class _MyWidgetPageState extends State<MyWidget> {
 
   void Form(id) async {
     if (id != null) {
-      final dataPerpus = perpus.firstWhere((item) => item['id'] == id);
-
+      final dataPerpus = perpus.firstWhere((element) => element['id'] == id);
       namaController.text = dataPerpus['nama_buku'];
-      genreController.text = dataPerpus['genre_buku'];
       penulisController.text = dataPerpus['penulis_buku'];
       tahunController.text = dataPerpus['tahun_buku'];
-      jumlahController.text = dataPerpus['jumlah_buku'];
+      sipnosisController.text = dataPerpus['sipnosis_buku'];
     }
 
     showModalBottomSheet(
@@ -229,8 +281,8 @@ class _MyWidgetPageState extends State<MyWidget> {
                   child: Column(
                 children: [
                   const SizedBox(height: 10),
-                   Text(id == null ? 'Input Data Buku' : 'Update Data Buku',
-                      style: const TextStyle(
+                  const Text('Data Buku Baru',
+                      style: TextStyle(
                           color: Color(0xFF494CA2),
                           fontWeight: FontWeight.bold,
                           fontSize: 20)),
@@ -238,13 +290,6 @@ class _MyWidgetPageState extends State<MyWidget> {
                   TextField(
                     controller: namaController,
                     decoration: const InputDecoration(hintText: "Nama Buku"),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: genreController,
-                    decoration: const InputDecoration(hintText: "Genre Buku"),
                   ),
                   const SizedBox(
                     height: 10,
@@ -264,31 +309,57 @@ class _MyWidgetPageState extends State<MyWidget> {
                     height: 10,
                   ),
                   TextField(
-                    controller: jumlahController,
-                    decoration: const InputDecoration(hintText: "Jumlah Buku"),
+                    controller: sipnosisController,
+                    decoration:
+                        const InputDecoration(hintText: "Sipnosis Buku"),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   ElevatedButton(
+                      onPressed: () {
+                        getFilePicker();
+                      },
+                      child: Row(
+                        children: const [
+                          Text("Pilih Gambar"),
+                          Icon(Icons.camera)
+                        ],
+                      )),
+                  ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF494CA2)),
                       onPressed: () async {
                         if (id == null) {
-                          await createData();
+                          String? photo = photoprofile;
+                          final data = Buku(
+                              id: id,
+                              nama_buku: namaController.text,
+                              penulis_buku: penulisController.text,
+                              tahun_buku: tahunController.text,
+                              sipnosis_buku: sipnosisController.text,
+                              foto_buku: photo.toString());
+                          await createData(data);
                           print("Tambah");
                         } else {
-                          await changeData(id);
+                          String? photo = photoprofile;
+                          final data = Buku(
+                              id: id,
+                              nama_buku: namaController.text,
+                              penulis_buku: penulisController.text,
+                              tahun_buku: tahunController.text,
+                              sipnosis_buku: sipnosisController.text,
+                              foto_buku: photo.toString());
+                          await changeData(data);
                           print("Updated");
                         }
                         namaController.text = '';
-                        genreController.text = '';
                         penulisController.text = '';
                         tahunController.text = '';
-                        jumlahController.text = '';
+                        sipnosisController.text = '';
                         Navigator.pop(context);
                       },
-                      child: Text(id == null ? 'Tambah' : 'Update'))
+                      child: Text(id == null ? 'Tambah' : 'ubah'))
                 ],
               )),
             )));
