@@ -76,6 +76,6 @@ class SQLPerpus {
 
   static Future deleteData2(int id) async {
     final db = await SQLPerpus.db();
-    await db.delete("perpus", where: "id=$id");
+    await db.delete("majalah", where: "id=$id");
   }
 }
