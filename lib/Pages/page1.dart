@@ -214,7 +214,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                                       perpus[index]['nama_buku'] ?? "No Tittle",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                           color: Color(0xFF494CA2)),

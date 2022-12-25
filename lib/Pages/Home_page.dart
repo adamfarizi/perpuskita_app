@@ -55,13 +55,13 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(5),
                 tabs: [
                   Tab(
-                    icon: Icon(Icons.home),
-                  ),
-                  Tab(
                     icon: Icon(Icons.book),
                   ),
                   Tab(
-                  icon: Icon(Icons.shop),
+                    icon: Icon(Icons.import_contacts),
+                  ),
+                  Tab(
+                  icon: Icon(Icons.headphones),
                   ),
                   Tab(
                     icon: Icon(Icons.account_circle_rounded),
