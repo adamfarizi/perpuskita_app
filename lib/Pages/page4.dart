@@ -23,7 +23,9 @@ class page4 extends StatelessWidget {
         child: Indexer(
           children: [
             Indexed(
-              child: Column(
+              child: Positioned(
+                left: 60,
+                child: Column(
                 children: [
                   const SizedBox(
                     height: 230,
@@ -48,7 +50,7 @@ class page4 extends StatelessWidget {
                     ),
                   )
                 ],
-              ),
+              ),)
             )
           ],
         ),

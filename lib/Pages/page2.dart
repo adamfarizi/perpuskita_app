@@ -1,6 +1,5 @@
 import 'package:perpuskita_app/sql_perpus.dart';
 import 'package:flutter/material.dart';
-
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
@@ -136,7 +135,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                       builder: (BuildContext context) => AlertDialog(
                         title: Center(child: Text(majalah[index]['judul_majalah'] ?? "No Tittle", textAlign: TextAlign.center,),),
                         content: Container(
-                          height: 150,
+                          height: 80,
                           width: 100,
                           child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,21 +151,21 @@ class _MyWidgetPageState extends State<MyWidget> {
                         actions: <Widget>[
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('Cancel'),
+                            child: const Text('Cancel', style: TextStyle(color: Color(0xFF494CA2)),),
                           ),
                           TextButton(
                             onPressed: () {
                               Form(majalah[index]['id']);
                               Navigator.of(context).pop();
                             },
-                            child: const Text('EDIT'),
+                            child: const Text('EDIT', style: TextStyle(color: Color(0xFF494CA2)),),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context)
                                   .pop(deleteData2(majalah[index]['id']));
                             },
-                            child: const Text('HAPUS'),
+                            child: const Text('HAPUS', style: TextStyle(color: Color(0xFF494CA2)),),
                           ),
                         ],
                       ),
@@ -177,16 +176,22 @@ class _MyWidgetPageState extends State<MyWidget> {
                     child: Card(
                       child: Column(
                         children: [
+                           if ((majalah[index]['foto_majalah'] as String) == "null")...[
+                          const Image(
+                            image: AssetImage('asset/img/book3.jpg'),
+                          fit: BoxFit.cover,
+                          height: 150,
+                          ),
+                          ]
+                          else ...[
                           Container(
                             height: 150, width: 200,
-                            child: majalah[index]['foto_majalah'] != ''
-                                ? Image.file(
+                            child: Image.file(
                                     File(majalah[index]['foto_majalah']),
-                        
                                     fit: BoxFit.cover,
-                                  )
-                                : FlutterLogo(),
+                                    )
                           ),
+                          ],
                           Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Container(

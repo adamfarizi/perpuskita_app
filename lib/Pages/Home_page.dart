@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:perpuskita_app/Pages/model/majalah.dart';
 import 'package:perpuskita_app/Pages/page1.dart';
 import 'package:perpuskita_app/Pages/page2.dart';
 import 'package:perpuskita_app/Pages/page3.dart';

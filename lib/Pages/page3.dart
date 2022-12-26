@@ -41,7 +41,7 @@ class _AnimationState extends State<Animation> with TickerProviderStateMixin {
               height: 50,
             ),
             Image.asset(
-              'asset/img/download.png',
+              'asset/img/P3.png',
               width: 200,
             ),
             const SizedBox(

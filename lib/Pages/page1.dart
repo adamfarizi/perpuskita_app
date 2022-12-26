@@ -50,16 +50,14 @@ class _MyWidgetPageState extends State<MyWidget> {
     super.initState();
   }
 
-  String? photoprofile;
+  String? gambarbuku;
   Future<String> getFilePicker() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: [
-        'jpg',
-        'png',
-        'webm',
-      ],
-    );
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom,
+    allowedExtensions: [
+      'jpg',
+      'png',
+      'webm',
+    ],);
 
     if (result != null) {
       PlatformFile sourceFile = result.files.first;
@@ -69,7 +67,7 @@ class _MyWidgetPageState extends State<MyWidget> {
       final newFile =
           File(sourceFile.path!).copy(destinationFile.path.toString());
       setState(() {
-        photoprofile = destinationFile.path;
+        gambarbuku = destinationFile.path;
       });
       File(sourceFile.path!.toString()).delete();
       return destinationFile.path;
@@ -117,7 +115,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              hintText: 'Search Buku'),
+                              hintText: 'Search Books'),
                         ),
                       ),
                     ],
@@ -136,53 +134,40 @@ class _MyWidgetPageState extends State<MyWidget> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
-                        title: Center(
-                          child: Text(
-                            perpus[index]['nama_buku'] ?? "No Tittle",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        title: Center(child: Text(perpus[index]['nama_buku'] ?? "No Tittle", textAlign: TextAlign.center,),),
                         content: Container(
                           height: 150,
                           width: 100,
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  "Penulis : " + perpus[index]['penulis_buku']),
-                              const SizedBox(height: 5),
-                              Text("Tahun : " + perpus[index]['tahun_buku']),
-                              const SizedBox(height: 10),
-                              const Text(
-                                "Sinopsis",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                perpus[index]['sipnosis_buku'],
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Penulis : " + perpus[index]['penulis_buku']),
+                            const SizedBox(height: 5),
+                            Text("Tahun : " + perpus[index]['tahun_buku']),
+                            const SizedBox(height: 10),
+                            const Text("Sinopsis", style: TextStyle(fontWeight: FontWeight.bold),),
+                            Text(perpus[index]['sipnosis_buku'], maxLines: 4, overflow: TextOverflow.ellipsis,),
+                          ],
+                        ),
                         ),
                         actions: <Widget>[
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('Cancel'),
+                            child: const Text('Cancel', style: TextStyle(color: Color(0xFF494CA2)),),
                           ),
                           TextButton(
                             onPressed: () {
                               Form(perpus[index]['id']);
                               Navigator.of(context).pop();
                             },
-                            child: const Text('EDIT'),
+                            child: const Text('EDIT', style: TextStyle(color: Color(0xFF494CA2)),),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context)
                                   .pop(deleteData(perpus[index]['id']));
                             },
-                            child: const Text('HAPUS'),
+                            child: const Text('HAPUS', style: TextStyle(color: Color(0xFF494CA2)),),
                           ),
                         ],
                       ),
@@ -193,42 +178,41 @@ class _MyWidgetPageState extends State<MyWidget> {
                     child: Card(
                       child: Column(
                         children: [
+                          if ((perpus[index]['foto_buku'] as String) == "null")...[
+                          const Image(
+                            image: AssetImage('asset/img/book3.jpg'),
+                          fit: BoxFit.cover,
+                          height: 150,
+                          ),
+                          ]
+                          else ...[
                           Container(
-                            height: 150,
-                            width: 200,
-                            child: perpus[index]['foto_buku'] != ''
-                                ? Image.file(
+                            height: 150, width: 200,
+                            child: Image.file(
                                     File(perpus[index]['foto_buku']),
                                     fit: BoxFit.cover,
-                                  )
-                                : FlutterLogo(),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Container(
-                                width: 150,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      perpus[index]['nama_buku'] ?? "No Tittle",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF494CA2)),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      perpus[index]['tahun_buku'],
-                                      style: TextStyle(fontSize: 10),
                                     )
-                                  ],
-                                ),
-                              )),
+                          ),
+                          ],
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Container(
+                              width: 150,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    perpus[index]['nama_buku'] ?? "No Tittle",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF494CA2)),
+                                  ),
+                                  const SizedBox(height: 5,),
+                                  Text(perpus[index]['tahun_buku'], style: TextStyle(fontSize: 10),)
+                                ],
+                              ),
+                            )
+                          ),
                         ],
                       ),
                     ),
@@ -309,8 +293,7 @@ class _MyWidgetPageState extends State<MyWidget> {
                   ),
                   TextField(
                     controller: sipnosisController,
-                    decoration:
-                        const InputDecoration(hintText: "Sipnosis Buku"),
+                    decoration: const InputDecoration(hintText: "Sipnosis Buku"),
                   ),
                   const SizedBox(
                     height: 20,
@@ -325,30 +308,31 @@ class _MyWidgetPageState extends State<MyWidget> {
                           Icon(Icons.camera)
                         ],
                       )),
+
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF494CA2)),
                       onPressed: () async {
                         if (id == null) {
-                          String? photo = photoprofile;
+                          String? gambar = gambarbuku;
                           final data = Buku(
                               id: id,
                               nama_buku: namaController.text,
                               penulis_buku: penulisController.text,
                               tahun_buku: tahunController.text,
                               sipnosis_buku: sipnosisController.text,
-                              foto_buku: photo.toString());
+                              foto_buku: gambar.toString());
                           await createData(data);
                           print("Tambah");
                         } else {
-                          String? photo = photoprofile;
+                          String? gambar = gambarbuku;
                           final data = Buku(
                               id: id,
                               nama_buku: namaController.text,
                               penulis_buku: penulisController.text,
                               tahun_buku: tahunController.text,
                               sipnosis_buku: sipnosisController.text,
-                              foto_buku: photo.toString());
+                              foto_buku: gambar.toString());
                           await changeData(data);
                           print("Updated");
                         }
